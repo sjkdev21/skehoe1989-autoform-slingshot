@@ -7,8 +7,8 @@ There are several other autoform-slingshot packages for Meteor, but I encountere
 ## Setup##
 This package uses the [edgee:slingshot](https://github.com/CulturalMe/meteor-slingshot/) package to upload the files to Amazon S3 (all done client side).  Refer to the [edgee:slingshot](https://github.com/CulturalMe/meteor-slingshot/) documentation on how to set up Amazon AWS S3, as well as how to store your credentials in the Meteor Settings file.  All the client side work is done for you by the autoform-slingshot package, but you will need to define your own server-side Slingshot directives.  If you want to do client-side image resizing (to create thumbnails or create images of a uniform size) I suggest using [thinksoftware:image-resize-client](https://github.com/thinksoftware/meteor-image-resize-client/).  It is an imperfect solution and does not work as well as a back end solution like imagemagick or graphicsmagick but it's better than nothing!
 
-Install the package:
-```meteor:add skehoe1989:autoform-slingshot```
+Install the package from the meteor project directory:
+```meteor add skehoe1989:autoform-slingshot```
 
 ## autoform-slingshot api##
 ```javascript
