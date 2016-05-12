@@ -1,6 +1,6 @@
 Package.describe({
   name: 'skehoe1989:autoform-slingshot',
-  version: '1.0.0',
+  version: '1.0.1',
   // Brief, one-line summary of the package.
   summary: 'An autoform input for edgee:slingshot',
   // URL to the Git repository containing the source code for this package.
