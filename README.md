@@ -94,6 +94,7 @@ BlogPostsSchema = new SimpleSchema({
     }
 
 });
+```
 
 ##setting up slingshot directives##
 It is best to follow the documentation at [edgee:slingshot](https://github.com/CulturalMe/meteor-slingshot/) on this, however below I will paste the three directives used in the example above: largeThumb3, smallThumbS3 and originalS3.  Choosing to use one directive (or several) comes down to if you want to set different max size limits and/or want to store different sized images in different folders.  All directives should be set up only on the Meteor server side.
