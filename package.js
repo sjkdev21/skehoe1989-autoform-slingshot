@@ -16,7 +16,7 @@ Package.onUse(function(api) {
   api.use('session')
   api.use('blaze-html-templates');
   api.use('aldeed:autoform@5.7.1');
-  api.use('edgee:slingshot');
+  api.use('edgee:slingshot@0.7.1');
   api.addFiles('client/autoform-slingshot.html', 'client');
   api.addFiles('client/autoform-slingshot.js', 'client');
 });
