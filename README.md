@@ -1,13 +1,16 @@
-#autoform-slingshot#
+# autoform-slingshot#
 An autoform wrapper for autoform-slingshot.
 
-##motivation##
+## Motivation##
 There are several other autoform-slingshot packages for Meteor, but I encountered bugs in all of them when it came to supporting multiple slingshot directives and/or image resizing.  I found the code in many of the other packages to be unnecessarily complex and decided to rewrite the package from scratch.  This version is based on the [MeteorChef tutorial](https://themeteorchef.com/recipes/uploading-files-to-amazon-s3/) on how to upload images to S3.
 
-##setup##
+## Setup##
 This package uses the [edgee:slingshot](https://github.com/CulturalMe/meteor-slingshot/) package to upload the files to Amazon S3 (all done client side).  Refer to the [edgee:slingshot](https://github.com/CulturalMe/meteor-slingshot/) documentation on how to set up Amazon AWS S3, as well as how to store your credentials in the Meteor Settings file.  All the client side work is done for you by the autoform-slingshot package, but you will need to define your own server-side Slingshot directives.  If you want to do client-side image resizing (to create thumbnails or create images of a uniform size) I suggest using [thinksoftware:image-resize-client](https://github.com/thinksoftware/meteor-image-resize-client/).  It is an imperfect solution and does not work as well as a back end solution like imagemagick or graphicsmagick but it's better than nothing!
 
-##autoform-slingshot api##
+Install the package:
+```meteor:add skehoe1989:autoform-slingshot```
+
+## autoform-slingshot api##
 ```javascript
 BlogPostsSchema = new SimpleSchema({
     title: {
@@ -96,7 +99,7 @@ BlogPostsSchema = new SimpleSchema({
 });
 ```
 
-##setting up slingshot directives##
+## Setting up slingshot directives##
 It is best to follow the documentation at [edgee:slingshot](https://github.com/CulturalMe/meteor-slingshot/) on this, however below I will paste the three directives used in the example above: largeThumb3, smallThumbS3 and originalS3.  Choosing to use one directive (or several) comes down to if you want to set different max size limits and/or want to store different sized images in different folders.  All directives should be set up only on the Meteor server side.
 
 ```javascript
@@ -156,7 +159,7 @@ Slingshot.createDirective( "originalS3", Slingshot.S3Storage, {
 
 ```
 
-##Output Object Example##
+## Output Object Example##
 Below is what a typical output would look like for the picture field
 
 ```javascript
