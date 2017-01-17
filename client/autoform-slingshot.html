@@ -4,14 +4,19 @@
             <img src="{{thumbnail}}" alt="" class="img-fileUpload-thumbnail img-thumbnail img-rounded">
             <div><a class="file-upload-clear" file-input="{{schemaKey}}"><i class="fa fa-times"></i> Remove</a></div>
         {{else}}
-            <div class="upload-area">
-                <form id="upload">
-                    <p class="alert alert-success text-center">
-                        <span>Click or Drag a File Here to Upload</span>
-                        <input name="{{schemaKey}}" type="file">
-                    </p>
-                </form>
-            </div>
+            {{#if filePath}}
+                <a href="{{filePath}}" alt="" class="img-fileUpload-thumbnail img-thumbnail img-rounded">{{filePath}}</a>
+                <div><a class="file-upload-clear" file-input="{{schemaKey}}"><i class="fa fa-times"></i> Remove</a></div>
+            {{else}}
+                <div class="upload-area">
+                    <form id="upload">
+                        <p class="alert alert-success text-center">
+                            <span>Click or Drag a File Here to Upload</span>
+                            <input name="{{schemaKey}}" type="file">
+                        </p>
+                    </form>
+                </div>
+            {{/if}}
         {{/if}}
     </div>
 </template>

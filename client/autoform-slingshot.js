@@ -28,8 +28,23 @@ let _uploadFileToAmazon = (file, directive, name, schemaKey) => {
             _setPlaceholderText();
         } else {
 
-            let img = new Image();
-            img.onload = function() {
+            if (_.contains(["image/png", "image/jpeg", "image/gif"], file.type) ) {
+                let img = new Image();
+                img.onload = function() {
+                    var fileRecord = Session.get(schemaKey + "_fileRecord");
+                    fileRecord[name] = {
+                        src: url,
+                        name: file.name,
+                        size: file.size,
+                        type: file.type,
+                        directive: directive,
+                        width: this.width,
+                        height: this.height
+                    };
+                    Session.set(schemaKey + "_fileRecord", fileRecord);
+                }
+                img.src = url;
+            } else {
                 var fileRecord = Session.get(schemaKey + "_fileRecord");
                 fileRecord[name] = {
                     src: url,
@@ -37,13 +52,9 @@ let _uploadFileToAmazon = (file, directive, name, schemaKey) => {
                     size: file.size,
                     type: file.type,
                     directive: directive,
-                    width: this.width,
-                    height: this.height
                 };
                 Session.set(schemaKey + "_fileRecord", fileRecord);
             }
-            img.src = url;
-
 
         }
     });
@@ -100,6 +111,14 @@ Template.afSlingshot.helpers({
         var fileRecord = Session.get(this.atts['data-schema-key'] + "_fileRecord");
         if(fileRecord[this.atts.thumbnail]){
             return fileRecord[this.atts.thumbnail].src;
+        }
+    },
+    filePath: function () {
+        if (this.atts.showPath) {
+            var fileRecord = Session.get(this.atts['data-schema-key'] + "_fileRecord");
+            if(fileRecord.file){
+                return fileRecord.file.src;
+            }
         }
     }
 });
