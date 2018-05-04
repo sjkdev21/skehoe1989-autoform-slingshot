@@ -194,6 +194,37 @@ Below is what a typical output would look like for the picture field
 }
 ```
 
+### Custom placeholder text and thumbnail for the input file area ###
+
+Added simple customizations to the input file area, you may place an icon and update the placeholder text
+
+```javascript
+MyFileSchema = new SimpleSchema({
+    // other fields...
+    item: {
+        type: Object,
+        blackbox: true,
+        autoform: {
+            type: 'slingshotUpload',
+            afFieldInput: {
+                showPath: true,
+                slingshotdirective: {
+                    file: 'ActivityUpload'
+                },
+                altThumb: "/images/icons/file-upload.svg",
+                placeholderText: function(){
+                    return "Upload your homework here"
+                }
+            },
+            label: false
+        }
+    },
+    // ...
+})
+
+```
+
+
 Maintained by [BitTiger](http://bittiger.io)
 
 ![BitTiger Logo](https://raw.githubusercontent.com/oohaysmlm/autoform-relations/master/readme/small_logo.png)

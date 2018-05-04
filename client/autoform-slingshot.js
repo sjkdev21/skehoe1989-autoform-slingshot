@@ -4,7 +4,7 @@
 
 AutoForm.addInputType('slingshotUpload', {
     template: "afSlingshot",
-    valueOut: function(){
+    valueOut: function () {
         var fileRecord = Session.get(this.attr('data-schema-key') + "_fileRecord");
         return fileRecord;
 
@@ -13,24 +13,25 @@ AutoForm.addInputType('slingshotUpload', {
 
 let template;
 
-let _getFileFromInput = ( event ) => event.target.files[0];
+let _getFileFromInput = (event) => event.target.files[0];
 
-let _setPlaceholderText = ( string = "Click or Drag a File Here to Upload" ) => {
-    template.find( ".alert span" ).innerText = string;
+let _setPlaceholderText = (string = "Click or Drag a File Here to Upload") => {
+    const placeholderTextSpan = template.find(".alert span") || template.find('.upload-instruction')
+    placeholderTextSpan.innerText = string;
 };
 
 let _uploadFileToAmazon = (file, directive, name, schemaKey) => {
-    const uploader = new Slingshot.Upload( directive );
+    const uploader = new Slingshot.Upload(directive);
 
-    uploader.send( file, ( error, url ) => {
-        if ( error ) {
-            alert( error.message);
+    uploader.send(file, (error, url) => {
+        if (error) {
+            alert(error.message);
             _setPlaceholderText();
         } else {
 
-            if (_.contains(["image/png", "image/jpeg", "image/gif"], file.type) ) {
+            if (_.contains(["image/png", "image/jpeg", "image/gif"], file.type)) {
                 let img = new Image();
-                img.onload = function() {
+                img.onload = function () {
                     var fileRecord = Session.get(schemaKey + "_fileRecord");
                     fileRecord[name] = {
                         src: url,
@@ -60,14 +61,14 @@ let _uploadFileToAmazon = (file, directive, name, schemaKey) => {
     });
 };
 
-let uploadToAmazonS3 = ( options ) => {
+let uploadToAmazonS3 = (options) => {
     template = options.template;
-    let file = _getFileFromInput( options.event );
+    let file = _getFileFromInput(options.event);
 
-    _setPlaceholderText( `Uploading ${file.name}...` );
-    if(options.onBeforeUpload){
-        options.onBeforeUpload(file, function(file){
-            _uploadFileToAmazon(file, options.directive, options.name,  options.schemaKey);
+    _setPlaceholderText(`Uploading ${file.name}...`);
+    if (options.onBeforeUpload) {
+        options.onBeforeUpload(file, function (file) {
+            _uploadFileToAmazon(file, options.directive, options.name, options.schemaKey);
         });
     }
     else {
@@ -78,7 +79,7 @@ let uploadToAmazonS3 = ( options ) => {
 };
 
 Template.afSlingshot.events({
-    'change input[type="file"]' ( event, template ) {
+    'change input[type="file"]'(event, template) {
         /*
         var file = event.target.files[0];
         var reader = new FileReader();
@@ -88,45 +89,65 @@ Template.afSlingshot.events({
         reader.readAsBinaryString(file);
          */
         var directives = this.atts.slingshotdirective;
-        for(var key in directives){
+        for (var key in directives) {
             if (directives.hasOwnProperty(key) && (typeof directives[key] === "object")) {
-                uploadToAmazonS3( { event: event, template: template, directive: directives[key].directive, name:key, onBeforeUpload: directives[key].onBeforeUpload, schemaKey:this.atts['data-schema-key'] } );
+                uploadToAmazonS3({
+                    event: event,
+                    template: template,
+                    directive: directives[key].directive,
+                    name: key,
+                    onBeforeUpload: directives[key].onBeforeUpload,
+                    schemaKey: this.atts['data-schema-key']
+                });
             }
-            else if(directives.hasOwnProperty(key) && (typeof directives[key] === "string")){
-                uploadToAmazonS3( { event: event, template: template, directive: directives[key], name:key, schemaKey:this.atts['data-schema-key'] } );
+            else if (directives.hasOwnProperty(key) && (typeof directives[key] === "string")) {
+                uploadToAmazonS3({
+                    event: event,
+                    template: template,
+                    directive: directives[key],
+                    name: key,
+                    schemaKey: this.atts['data-schema-key']
+                });
             }
         }
 
     },
-    'click .file-upload-clear' : function(e) {
+    'click .file-upload-clear': function (e) {
         Session.set(this.atts['data-schema-key'] + "_fileRecord", {});
     }
 });
 
 Template.afSlingshot.helpers({
-   schemaKey: function(){
-       return this.atts['data-schema-key'];
-   },
-    thumbnail: function(){
+    schemaKey: function () {
+        return this.atts['data-schema-key'];
+    },
+    thumbnail: function () {
         var fileRecord = Session.get(this.atts['data-schema-key'] + "_fileRecord");
-        if(fileRecord[this.atts.thumbnail]){
+        if (fileRecord[this.atts.thumbnail]) {
             return fileRecord[this.atts.thumbnail].src;
         }
+
+        // return !!this.atts.altThumb && this.atts.altThumb;
     },
     filePath: function () {
         if (this.atts.showPath) {
             var fileRecord = Session.get(this.atts['data-schema-key'] + "_fileRecord");
-            if(fileRecord.file){
+            if (fileRecord.file) {
                 return fileRecord.file.src;
             }
         }
+    },
+    placeholderText: function () {
+        return !!this.atts.placeholderText && this.atts.placeholderText;
+    },
+    altThumb: function () {
+        return !!this.atts.altThumb && this.atts.altThumb;
     }
 });
 
 
-
-Template.afSlingshot.onCreated(function(){
-    if(this.data.value){
+Template.afSlingshot.onCreated(function () {
+    if (this.data.value) {
         Session.set(this.data.atts['data-schema-key'] + "_fileRecord", this.data.value);
     }
     else {

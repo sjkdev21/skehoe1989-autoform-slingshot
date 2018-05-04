@@ -10,10 +10,20 @@
             {{else}}
                 <div class="upload-area">
                     <form id="upload">
-                        <p class="alert alert-success text-center">
-                            <span>Click or Drag a File Here to Upload</span>
-                            <input name="{{schemaKey}}" type="file">
-                        </p>
+                        {{#if AND altThumb placeholderText}}
+                            <p class="alert text-center">
+                                <div class="file-upload-view">
+                                <img class="upload-icon" src="{{altThumb}}"/>
+                                <div class="upload-instruction">{{placeholderText}}</div>
+                                <input name="{{schemaKey}}" type="file">
+                                </div>
+                            </p>
+                        {{else}}
+                            <p class="alert alert-success text-center">
+                                <span>Click or Drag a File Here to Upload</span>
+                                <input name="{{schemaKey}}" type="file">
+                            </p>
+                        {{/if}}
                     </form>
                 </div>
             {{/if}}
